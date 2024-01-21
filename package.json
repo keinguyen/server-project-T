@@ -1,0 +1,19 @@
+{
+  "name": "server-project-t",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "",
+  "license": "CC0",
+  "author": "keinguyen",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keinguyen/server-project-T"
+  },
+  "scripts": {
+  },
+  "dependencies": {
+    "webrtc-adapter": "^1.4.0",
+    "websocket": "^1.0.29"
+  }
+}
