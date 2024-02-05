@@ -1,3 +1,4 @@
+import { Logger } from "@nestjs/common";
 import {
   ConnectedSocket,
   MessageBody,
@@ -18,6 +19,7 @@ import { Server, Socket } from "socket.io";
 export class SocketGateway {
   @WebSocketServer()
   server: Server;
+  private logger = new Logger();
 
   constructor() {}
 
@@ -26,6 +28,7 @@ export class SocketGateway {
     @MessageBody() roomId: number,
     @ConnectedSocket() client: Socket
   ) {
+    this.logger.debug(client);
     client.emit("joinConversation", roomId.toString());
   }
 }
