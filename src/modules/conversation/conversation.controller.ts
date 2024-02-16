@@ -19,14 +19,15 @@ export class ConversationController {
 
   @Post("/create")
   async createConversation(
-    @Body() body: { streamName: string; accountId: string },
+    @Body() body: { streamName: string; accountId: string; ticketId: string },
     @Res() res: Response
   ) {
-    const { streamName, accountId } = body;
+    const { streamName, accountId, ticketId } = body;
 
     this.dolbyGateway.server.emit("joinConversation", {
       streamName: streamName,
       accountId: accountId,
+      ticketId,
     });
 
     return res.status(HttpStatus.OK).json("");
