@@ -32,4 +32,20 @@ export class ConversationController {
 
     return res.status(HttpStatus.OK).json("");
   }
+
+  @Post("/end")
+  async endConversation(
+    @Body() body: { streamName: string; accountId: string; ticketId: string },
+    @Res() res: Response
+  ) {
+    const { streamName, accountId, ticketId } = body;
+
+    this.dolbyGateway.server.emit("endConversation", {
+      streamName: streamName,
+      accountId: accountId,
+      ticketId,
+    });
+
+    return res.status(HttpStatus.OK).json("");
+  }
 }
