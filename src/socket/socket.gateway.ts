@@ -31,4 +31,12 @@ export class SocketGateway {
     this.logger.debug(client);
     client.emit("joinConversation", roomId.toString());
   }
+
+  @SubscribeMessage("endConversation")
+  endConversation(
+    @MessageBody() roomId: number,
+    @ConnectedSocket() client: Socket
+  ) {
+    client.emit("endConversation", roomId.toString());
+  }
 }
