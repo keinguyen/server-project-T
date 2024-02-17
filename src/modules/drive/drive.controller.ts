@@ -29,6 +29,8 @@ export class DriveController {
     @Body() body: { title: string },
     @Res() res: Response
   ) {
+    this.logger.debug("start upload file: ticketId", ticketId);
+
     const isDev = false;
     const host = isDev
       ? "http://localhost:9999/"
@@ -56,6 +58,8 @@ export class DriveController {
           headers: request.headers,
         }
       );
+
+      this.logger.debug("uploaded", ticketId);
 
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
