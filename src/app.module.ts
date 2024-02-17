@@ -6,9 +6,10 @@ import { DriveModule } from "./modules/drive/drive.module";
 import { SocketGateway } from "./socket/socket.gateway";
 import { ConversationModule } from "./modules/conversation/conversation.module";
 import { NotificationService } from "./notification/notification.service";
+import { TicketModule } from "src/modules/ticket/ticket.module";
 
 @Module({
-  imports: [DolbyModule, DriveModule, ConversationModule],
+  imports: [DolbyModule, DriveModule, TicketModule, ConversationModule],
   controllers: [AppController],
   providers: [AppService, SocketGateway, NotificationService],
 })

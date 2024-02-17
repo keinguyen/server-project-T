@@ -1,11 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { google } from "googleapis";
+import { title } from "process";
 import { Readable } from "stream";
 
 @Injectable()
 export class DriveService {
   private oauth2Client;
+  private drive: ReturnType<typeof google.drive>;
   private folderId = "1y-_5bxfabZVe0RVaN919IYB1Vq6tF-ii";
+  private mimeType = "application/vnd.google-apps.folder";
 
   constructor() {
     this.oauth2Client = new google.auth.GoogleAuth({
@@ -17,25 +20,43 @@ export class DriveService {
       },
       scopes: ["https://www.googleapis.com/auth/drive"],
     });
-  }
 
-  createFile = async (
-    files: Array<Express.Multer.File>
-  ): Promise<{ fileId: string; thumbnailLink: string }[]> => {
-    const drive = google.drive({
+    this.drive = google.drive({
       version: "v3",
       auth: this.oauth2Client,
     });
+  }
 
+  createFolder = async (title: string) => {
+    try {
+      const result = await this.drive.files.create({
+        requestBody: {
+          name: title,
+          mimeType: this.mimeType,
+          parents: [this.folderId],
+        },
+        fields: "id",
+      });
+
+      return result.data.id;
+    } catch (error) {
+      return undefined;
+    }
+  };
+
+  createFile = async (
+    folderId: string,
+    files: Array<Express.Multer.File>
+  ): Promise<{ fileId: string; thumbnailLink: string }[]> => {
     const data: { fileId: string; thumbnailLink: string }[] = [];
 
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
 
-      const result = await drive.files.create({
+      const result = await this.drive.files.create({
         requestBody: {
           name: file.filename,
-          parents: [this.folderId],
+          parents: [folderId],
         },
         media: {
           mimeType: "image/jpeg",

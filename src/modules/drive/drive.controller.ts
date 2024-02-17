@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpStatus,
   Logger,
@@ -25,15 +26,19 @@ export class DriveController {
   async uploadFile(
     @Param("ticketId") ticketId,
     @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: { title: string },
     @Res() res: Response
   ) {
-    const isDev = false;
+    const isDev = true;
     const host = isDev
       ? "http://localhost:9999/"
       : "https://ephemeral-salmiakki-1ae238.netlify.app/";
 
     try {
-      const result = await this.driveService.createFile(files);
+      const folderId = await this.driveService.createFolder(body.title);
+      if (!folderId) throw new Error("FolderId not found");
+
+      const result = await this.driveService.createFile(folderId, files);
       const request = {
         url: `${host}.netlify/functions/attachments`,
         headers: {
