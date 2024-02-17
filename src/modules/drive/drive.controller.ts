@@ -29,7 +29,7 @@ export class DriveController {
     @Body() body: { title: string },
     @Res() res: Response
   ) {
-    const isDev = true;
+    const isDev = false;
     const host = isDev
       ? "http://localhost:9999/"
       : "https://ephemeral-salmiakki-1ae238.netlify.app/";

@@ -55,11 +55,11 @@ export class DriveService {
 
       const result = await this.drive.files.create({
         requestBody: {
-          name: file.filename,
+          name: file.originalname,
           parents: [folderId],
         },
         media: {
-          mimeType: "image/jpeg",
+          mimeType: file.mimetype,
           body: Readable.from(Buffer.from(new Uint8Array(file.buffer))),
         },
         fields: "id, thumbnailLink",
